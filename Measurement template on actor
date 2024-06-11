@@ -1,0 +1,39 @@
+(async () => {
+
+    let new circleRadius = 20;
+
+    new Dialog({
+        title: 'Measurement template on actor',
+        content: `
+              <form class="flexcol">
+                <div class="form-group">
+                  <select id="effect">
+                  ${content}
+                  </select>
+                </div>
+              </form>
+            `,
+        buttons: {
+          apply: {
+              label: "Apply",
+              callback: async (html) => {
+                let effectId = html.find('#effect').val();
+                let effect = effects.find(i => i.id === effectId);
+                await AAHelpers.applyDrawing(drawing, [effect])
+              }
+          }
+        }
+    }).render(true)
+
+    let newTemplate= await canvas.scene.createEmbeddedDocuments('MeasuredTemplate', [{
+        t: "circle",
+        user: game.userId,
+        x: token.center.x,
+        y: token.center.y,
+        direction: 0,
+        distance: 30,
+        borderColor: "#44975C",
+        fillColor: "#44975C"
+        }]);
+    tokenAttacher.attachElementsToToken(newTemplate, token, false);
+})()
